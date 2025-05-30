@@ -34,6 +34,7 @@ class Openturns(CMakePackage):
 
     variant("python", default=True, description="Build Python bindings")
     variant("libxml2", default=False, description="Use LibXML2 for XML support")
+    variant("hdf5", default=False, description="Build with hdf5 support")
 
     depends_on("c", type="build")
     depends_on("cxx", type="build")
@@ -46,6 +47,7 @@ class Openturns(CMakePackage):
     depends_on("boost+system+serialization+thread")
     depends_on("intel-tbb")
     depends_on("libxml2", when="+libxml2")
+    depends_on("hdf5+cxx", when="+hdf5")
 
     with when("+python"):
         extends("python")
@@ -72,7 +74,7 @@ class Openturns(CMakePackage):
             self.define("USE_CUBA", False),
             self.define("USE_DLIB", False),
             self.define("USE_DOXYGEN", False),
-            self.define("USE_HDF5", False),
+            self.define_from_variant("USE_HDF5", "hdf5"),
             self.define("USE_HMAT", False),
             self.define("USE_IPOPT", False),
             self.define("USE_MPC", False),
